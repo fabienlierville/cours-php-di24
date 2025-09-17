@@ -88,5 +88,12 @@ class Article{
         return $this;
     }
 
+    public static function SqlGetAll()
+    {
+        $bdd = BDD::getInstance();
+        $req = $bdd->query('SELECT * FROM article order by Id DESC ');
+        $articles = $req->fetchAll();
+        return $articles;
+    }
 
 }
