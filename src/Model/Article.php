@@ -92,8 +92,21 @@ class Article{
     {
         $bdd = BDD::getInstance();
         $req = $bdd->query('SELECT * FROM articles order by Id DESC ');
-        $articles = $req->fetchAll();
-        return $articles;
+        $articles = $req->fetchAll(\PDO::FETCH_ASSOC);
+        $arrayArticles = [];
+        foreach ($articles as $article) {
+            $articleObj = new Article();
+            $articleObj->setId($article['Id']);
+            $articleObj->setTitre($article['Titre']);
+            $articleObj->setAuteur($article['Auteur']);
+            $articleObj->setDescription($article['Description']);
+            $articleObj->setDatePublication(new \DateTime($article['DatePublication']));
+            $articleObj->setImageRepository($article['ImageRepository']);
+            $articleObj->setImageFileName($article['ImageFileName']);
+            $arrayArticles[] = $articleObj;
+        }
+
+        return $arrayArticles;
     }
 
 }
