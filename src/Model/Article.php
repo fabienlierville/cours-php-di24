@@ -91,7 +91,7 @@ class Article{
     public static function SqlGetAll()
     {
         $bdd = BDD::getInstance();
-        $req = $bdd->query('SELECT * FROM article order by Id DESC ');
+        $req = $bdd->query('SELECT * FROM articles order by Id DESC ');
         $articles = $req->fetchAll();
         return $articles;
     }

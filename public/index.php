@@ -12,9 +12,5 @@ function chargerclasse($classe){
 }
 spl_autoload_register("chargerclasse");
 
-
-$article = new src\Model\Article();
-$article->setTitre("Mon premier article")
-    ->setDescription("tatata")
-    ->setDatePublication(new \DateTime());
-var_dump($article);
+$controller = new src\Controller\AdminArticleController();
+$controller->list();
