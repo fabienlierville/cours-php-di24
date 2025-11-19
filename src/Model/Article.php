@@ -129,7 +129,7 @@ class Article{
     public static function SqlGetById(int $id) : ?Article
     {
         $bdd = BDD::getInstance();
-        $req = $bdd->query('SELECT * FROM articles WHERE Id = :Id ');
+        $req = $bdd->prepare('SELECT * FROM articles WHERE Id = :Id ');
         $req->bindValue(':Id', $id);
         $req->execute();
         $articleSql = $req->fetch(\PDO::FETCH_ASSOC);
