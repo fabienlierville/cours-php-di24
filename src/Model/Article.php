@@ -125,4 +125,26 @@ class Article{
             var_dump($e->getMessage());
         }
     }
+
+    public static function SqlGetById(int $id) : ?Article
+    {
+        $bdd = BDD::getInstance();
+        $req = $bdd->query('SELECT * FROM articles WHERE Id = :Id ');
+        $req->bindValue(':Id', $id);
+        $req->execute();
+        $articleSql = $req->fetch(\PDO::FETCH_ASSOC);
+        if($articleSql != false){
+            $articleObj = new Article();
+            $articleObj->setId($articleSql['Id']);
+            $articleObj->setTitre($articleSql['Titre']);
+            $articleObj->setAuteur($articleSql['Auteur']);
+            $articleObj->setDescription($articleSql['Description']);
+            $articleObj->setDatePublication(new \DateTime($articleSql['DatePublication']));
+            $articleObj->setImageRepository($articleSql['ImageRepository']);
+            $articleObj->setImageFileName($articleSql['ImageFileName']);
+
+            return $articleObj;
+        }
+        return null;
+    }
 }

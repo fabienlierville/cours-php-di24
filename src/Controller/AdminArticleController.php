@@ -19,12 +19,43 @@ class AdminArticleController extends AbstractController{
 
     public function add(){
         if(isset($_POST["Titre"])){
+            //1. Upload Fichier
+            $sqlRepository = null; // On ne fera pas X requetes SQL différentes donc on déclare les variables dès le début pour les utiliser dans la requete SQL
+            $nomImage = null;
+
+            if(!empty($_FILES['Image']['name']) ) {
+                //Type MIME
+                $fileMimeType = mime_content_type($_FILES['Image']['tmp_name']);
+                $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                //Extension
+                $extension = pathinfo($_FILES['Image']['name'], PATHINFO_EXTENSION);
+                $allowedExtensions = ['jpg', 'gif', 'png', 'jpeg'];
+                // strtolower = on compare ce qui est comparage (JPEG =! jpeg)
+                if (in_array(strtolower($extension), $allowedExtensions) && in_array($fileMimeType, $allowedMimeTypes)) {
+                    // Fabrication du répertoire d'accueil façon "Wordpress" (YYYY/MM)
+                    $dateNow = new \DateTime();
+                    $sqlRepository = $dateNow->format('Y/m');
+                    $repository = './uploads/images/' . $dateNow->format('Y/m');
+                    if (!is_dir($repository)) {
+                        mkdir($repository, 0777, true);
+                    }
+                    // Renommage du fichier (d'où l'intéret d'avoir isolé l'extension
+                    $nomImage = md5(uniqid()) . '.' . $extension;
+
+                    //Upload du fichier, voilà c'est fini !
+                    move_uploaded_file($_FILES['Image']['tmp_name'], $repository . '/' . $nomImage);
+                }
+            }
+
+
             //Créer un objet Article
             $article = new Article();
             $article->setTitre($_POST['Titre']);
             $article->setDescription($_POST['Description']);
             $article->setAuteur($_POST['Auteur']);
             $article->setDatePublication(new \DateTime($_POST['DatePublication']));
+            $article->setImageFileName($nomImage);
+            $article->setImageRepository($sqlRepository);
 
             //Exécuter la requete SQL d'ajout (model)
             $id = Article::SqlAdd($article);
@@ -63,6 +94,17 @@ class AdminArticleController extends AbstractController{
             Article::SqlAdd($article);
         }
         header('location: /?controller=AdminArticle&action=list ');
+    }
+
+    public function show($id){
+        $article = Article::SqlGetById($id);
+        if($article == null){
+            header("location: /?controller=AdminArticle&action=list");
+        }
+        return $this->twig->render("admin/article/show.html.twig",
+        [
+            "article" => $article,
+        ]);
     }
 
 }
