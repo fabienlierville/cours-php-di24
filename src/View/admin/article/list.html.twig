@@ -1,0 +1,29 @@
+{% extends "base.html.twig" %}
+
+{% block title %}ADMIN - {{ parent() }} > Liste des Articles {% endblock %}
+
+{% block body %}
+    <h1>Liste des derniers articles</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Titre</th>
+            <th scope="col">Date de Publication</th>
+            <th scope="col">Auteur</th>
+            <th scope="col">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for article in articles %}
+                <tr>
+                    <td><a href="#">{{ article.id }}</a></td>
+                    <td>{{ article.Titre }}</td>
+                    <td>{{ article.DatePublication|date('d/m/Y') }}</td>
+                    <td>{{ article.Auteur }}</td>
+                    <td><a href="#"><i class="bi bi-trash"></i></a> </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

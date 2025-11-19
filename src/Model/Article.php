@@ -109,4 +109,20 @@ class Article{
         return $arrayArticles;
     }
 
+    public static function SqlAdd(Article $article) : int{
+        try{
+            $req = BDD::getInstance()->prepare("INSERT INTO articles (Titre,Description,DatePublication,Auteur,ImageRepository,ImageFileName)  VALUES (:Titre, :Description, :DatePublication, :Auteur, :ImageRepository, :ImageFileName)");
+            $req->bindValue(':Titre', $article->getTitre());
+            $req->bindValue(':Description', $article->getDescription());
+            $req->bindValue(':DatePublication',$article->getDatePublication()?->format('Y-m-d'));
+            $req->bindValue(':Auteur',$article->getAuteur());
+            $req->bindValue(':ImageRepository',$article->getImageRepository());
+            $req->bindValue(':ImageFileName',$article->getImageFileName());
+            $req->execute();
+            return BDD::getInstance()->lastInsertId();
+
+        }catch (\Exception $e){
+            var_dump($e->getMessage());
+        }
+    }
 }
