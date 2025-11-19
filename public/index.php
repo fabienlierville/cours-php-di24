@@ -1,5 +1,5 @@
 <?php
-
+require __DIR__ . '/../vendor/autoload.php';
 //Auto Require
 function chargerclasse($classe){
     $ds = DIRECTORY_SEPARATOR;

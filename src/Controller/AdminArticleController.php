@@ -3,10 +3,12 @@ namespace src\Controller;
 
 use src\Model\Article;
 
-class AdminArticleController{
+class AdminArticleController extends AbstractController{
 
     public function list(){
+        var_dump("test");
         $articles = Article::SqlGetAll();
-        var_dump($articles);
+
+        return "<html><h1>test</h1></html>";
     }
 }
