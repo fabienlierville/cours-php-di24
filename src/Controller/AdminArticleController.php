@@ -18,6 +18,23 @@ class AdminArticleController extends AbstractController{
     }
 
     public function add(){
+        if(isset($_POST["Titre"])){
+            //Créer un objet Article
+            $article = new Article();
+            $article->setTitre($_POST['Titre']);
+            $article->setDescription($_POST['Description']);
+            $article->setAuteur($_POST['Auteur']);
+            $article->setDatePublication(new \DateTime($_POST['DatePublication']));
+
+            //Exécuter la requete SQL d'ajout (model)
+            $id = Article::SqlAdd($article);
+
+            //Rédiriger l'internaute sur la page liste
+            header("location:/?controller=AdminArticle&action=list");
+
+        }
+        return $this->twig->render('admin/article/add.html.twig');
+        /*
         $article = new Article();
         $article->setTitre("Cours PHP")
             ->setDescription("Article concernant le code PHP")
@@ -25,7 +42,8 @@ class AdminArticleController extends AbstractController{
             ->setDatePublication(new \DateTime());
         $id = Article::SqlAdd($article);
         header("location:/?controller=AdminArticle&action=list");
-    }
+        */
+        }
 
     public function fixtures(){
         $requete = BDD::getInstance()->prepare("TRUNCATE TABLE articles")->execute();
