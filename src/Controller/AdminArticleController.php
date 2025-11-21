@@ -29,7 +29,7 @@ class AdminArticleController extends AbstractController{
                 $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
                 //Extension
                 $extension = pathinfo($_FILES['Image']['name'], PATHINFO_EXTENSION);
-                $allowedExtensions = ['jpg', 'gif', 'png', 'jpeg'];
+                $allowedExtensions = ['jpg', 'gif', 'png', 'jpeg', 'webp'];
                 // strtolower = on compare ce qui est comparage (JPEG =! jpeg)
                 if (in_array(strtolower($extension), $allowedExtensions) && in_array($fileMimeType, $allowedMimeTypes)) {
                     // Fabrication du répertoire d'accueil façon "Wordpress" (YYYY/MM)
@@ -81,7 +81,7 @@ class AdminArticleController extends AbstractController{
                 $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
                 //Extension
                 $extension = pathinfo($_FILES['Image']['name'], PATHINFO_EXTENSION);
-                $allowedExtensions = ['jpg', 'gif', 'png', 'jpeg'];
+                $allowedExtensions = ['jpg', 'gif', 'png', 'jpeg', 'webp'];
                 // strtolower = on compare ce qui est comparage (JPEG =! jpeg)
                 if (in_array(strtolower($extension), $allowedExtensions) && in_array($fileMimeType, $allowedMimeTypes)) {
                     //Si image déjà existante alors on supprime
