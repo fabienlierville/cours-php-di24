@@ -61,7 +61,7 @@ class AdminArticleController extends AbstractController{
             $id = Article::SqlAdd($article);
 
             //Rédiriger l'internaute sur la page liste
-            header("location:/?controller=AdminArticle&action=show&param={$id}");
+            header("location:/AdminArticle/show/{$id}");
 
         }
         return $this->twig->render('admin/article/add.html.twig');
@@ -117,7 +117,7 @@ class AdminArticleController extends AbstractController{
             Article::SqlUpdate($article);
 
             //Rédiriger l'internaute sur la page liste
-            header("location:/?controller=AdminArticle&action=edit&param={$id}");
+            header("location:/AdminArticle/edit/{$id}");
 
         }
         return $this->twig->render('admin/article/edit.html.twig', [
@@ -142,13 +142,13 @@ class AdminArticleController extends AbstractController{
                 ->setDatePublication($dateAjout);
             Article::SqlAdd($article);
         }
-        header('location: /?controller=AdminArticle&action=list ');
+        header('location: /AdminArticle/list ');
     }
 
     public function show($id){
         $article = Article::SqlGetById($id);
         if($article == null){
-            header("location: /?controller=AdminArticle&action=list");
+            header("location: /AdminArticle/list");
         }
         return $this->twig->render("admin/article/show.html.twig",
         [
@@ -167,7 +167,7 @@ class AdminArticleController extends AbstractController{
         }
 
         Article::SqlDelete($id);
-        header("location: /?controller=AdminArticle&action=list");
+        header("location: /AdminArticle/list");
     }
 
 }
