@@ -126,6 +126,7 @@ class AdminArticleController extends AbstractController{
     }
 
     public function fixtures(){
+        UserController::haveGoodRole(["Administrateur","Fixtures"]);
         $requete = BDD::getInstance()->prepare("TRUNCATE TABLE articles")->execute();
         $arrayAuteur = ["Enzo","Camille","Bastien","Fael","Denis"];
         $arrayTitre = ["PHP En force", "React JS une valeur sure", "C# toujours au top", "Java en baisse"];

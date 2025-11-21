@@ -30,4 +30,27 @@ class UserController extends AbstractController
         return $this->twig->render("user/login.html.twig");
     }
 
+    public static function haveGoodRole(array $rolesCompatibles) {
+        if(!isset($_SESSION["login"])){
+            throw new \Exception("Vous devez vous authentifier pour accéder à cette page");
+        }
+        // Comparaison role par role
+        $roleFound = false;
+        foreach ($_SESSION["login"]["Roles"] as $role){
+            if(in_array($role, $rolesCompatibles)){
+                $roleFound = true;
+                break;
+            }
+        }
+        if(!$roleFound){
+            throw new \Exception("Vous n'avez pas le bon role pour accéder à cette page");
+        }
+    }
+
+    public function logout(){
+        unset($_SESSION["login"]);
+        header("Location:/");
+    }
+
+
 }
