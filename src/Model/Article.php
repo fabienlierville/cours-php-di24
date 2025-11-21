@@ -147,4 +147,22 @@ class Article{
         }
         return null;
     }
+
+    public static function SqlUpdate(Article $article) : ?Article
+    {
+        $bdd = BDD::getInstance();
+        $req = $bdd->prepare('UPDATE articles set Titre=:Titre, Description=:Description, DatePublication=:DatePublication, Auteur=:Auteur, ImageRepository=:ImageRepository, ImageFileName=:ImageFileName  where Id=:Id');
+
+        $req->bindValue(':Id', $article->getId());
+        $req->bindValue(':Titre', $article->getTitre());
+        $req->bindValue(':Description', $article->getDescription());
+        $req->bindValue(':DatePublication', $article->getDatePublication()->format('Y-m-d'));
+        $req->bindValue(':Auteur', $article->getAuteur());
+        $req->bindValue(':ImageRepository', $article->getImageRepository());
+        $req->bindValue(':ImageFileName', $article->getImageFileName());
+        $req->execute();
+
+        return $article;
+    }
+
 }

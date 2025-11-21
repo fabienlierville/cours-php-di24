@@ -1,0 +1,43 @@
+{% extends "base.html.twig" %}
+{% block title %}ADMIN - {{ parent() }} - Mise à jour d'un Article {% endblock %}
+
+{% block body %}
+    <h1>Mise à jour Article</h1>
+
+    <form method="post" enctype="multipart/form-data">
+
+        <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Saisir un titre" name="Titre" value="{{ article.Titre }}">
+        </div>
+
+        <div class="mb-3">
+            <textarea class="form-control" name="Description" rows="3"> {{ article.Description }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <input type="date" class="form-control" name="DatePublication" value="{{ article.DatePublication|date("Y-m-d") }}">
+        </div>
+
+        <div class="mb-3">
+            <select class="form-select" name="Auteur">
+                <option value="Enzo" {% if (article.Auteur=="Enzo") %} selected {% endif %}>Enzo</option>
+                <option value="Bastien" {% if (article.Auteur=="Bastien") %} selected {% endif %}>Bastien</option>
+                <option value="Camille" {% if (article.Auteur=="Camille") %} selected {% endif %}>Camille</option>
+                <option value="Denis" {% if (article.Auteur=="Denis") %} selected {% endif %}>Denis</option>
+                <option value="Fael" {% if (article.Auteur=="Fael") %} selected {% endif %}>Fael</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <input  type="file" class="custom-file-input" name="Image">
+        </div>
+
+        {% if file_exists('./uploads/images/'~article.ImageRepository~'/'~article.ImageFileName) and article.ImageFileName != "" %}
+            <img src="/uploads/images/{{ article.ImageRepository }}/{{ article.ImageFileName }}" class="img-thumbnail"/>
+        {% endif %}
+
+        <button type="submit" class="btn btn-primary">Valider</button>
+    </form>
+
+
+{% endblock %}
