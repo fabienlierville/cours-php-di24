@@ -83,4 +83,20 @@ class User {
         return null;
     }
 
+
+    public static function SqlAdd(User $user) :int
+    {
+        $requete = BDD::getInstance()->prepare("INSERT INTO users (Email, Password, NomPrenom, Roles) VALUES(:Email, :Password, :NomPrenom, :Roles)");
+
+        $requete->execute([
+            "Email" => $user->getEmail(),
+            "Password" => $user->getPassword(),
+            "NomPrenom" => $user->getNomPrenom(),
+            "Roles" => json_encode($user->getRoles())
+        ]);
+
+        return BDD::getInstance()->lastInsertId();
+    }
+
+
 }

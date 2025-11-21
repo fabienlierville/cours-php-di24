@@ -53,4 +53,22 @@ class UserController extends AbstractController
     }
 
 
+    public function create(){
+        if(isset($_POST["mail"]) && isset($_POST["password"]) && isset($_POST["roles"])){
+            $user = new User();
+            $hashpass = password_hash($_POST["password"], PASSWORD_BCRYPT, ["cost"=>12]);
+            $user->setEmail($_POST["mail"])
+                ->setPassword($hashpass)
+                ->setNomPrenom($_POST["nom"])
+                ->setRoles($_POST["roles"]);
+            $id = User::SqlAdd($user);
+
+            header("Location:/User/login");
+            exit();
+        }else{
+            return $this->twig->render("user/create.html.twig");
+        }
+
+    }
+
 }
