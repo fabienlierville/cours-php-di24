@@ -156,4 +156,18 @@ class AdminArticleController extends AbstractController{
         ]);
     }
 
+
+    public function delete($id)
+    {
+        $article = Article::SqlGetById($id);
+        $sqlRepository = ($article->getImageRepository() != "") ? $article->getImageRepository() : null;
+        $nomImage = ($article->getImageFileName() != "") ? $article->getImageFileName() : null;
+        if($sqlRepository!=null and $nomImage!=null){
+            unlink('./uploads/images/'.$sqlRepository.'/'.$nomImage);
+        }
+
+        Article::SqlDelete($id);
+        header("location: /?controller=AdminArticle&action=list");
+    }
+
 }

@@ -165,4 +165,11 @@ class Article{
         return $article;
     }
 
+    public static function SqlDelete(int $Id) {
+        $bdd = BDD::getInstance();
+        $req = $bdd->prepare('DELETE from articles where Id=:Id');
+        $req->bindValue(':Id', $Id);
+        $req->execute();
+    }
+
 }
