@@ -32,7 +32,8 @@ if($controller != ""){
             throw new Exception("Le controller {$controller} n'existe pas");
         }
     }catch (Exception $e){
-        var_dump($e->getMessage());
+        $controller = new \src\Controller\ErrorController();
+        echo $controller->show($e);
     }
 }else{
     // Route par défaut (plus tard)
