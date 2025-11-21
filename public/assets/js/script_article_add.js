@@ -1,0 +1,1 @@
+console.log("J du fichier script_article_add.js");

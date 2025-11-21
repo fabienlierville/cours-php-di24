@@ -1,6 +1,10 @@
 {% extends "base.html.twig" %}
 {% block title %}ADMIN - {{ parent() }} - Ajout d'un Article {% endblock %}
 
+{% block css %}
+    <link rel="stylesheet" href="/assets/css/style_article_add.css">
+{% endblock %}
+
 {% block body %}
     <h1>Ajout Article</h1>
 
@@ -35,4 +39,8 @@
     </form>
 
 
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" src="/assets/js/script_article_add.js"></script>
 {% endblock %}

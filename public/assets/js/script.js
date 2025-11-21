@@ -1,0 +1,1 @@
+console.log("JS du fichier script.js General");
