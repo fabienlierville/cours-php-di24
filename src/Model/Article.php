@@ -109,6 +109,31 @@ class Article{
         return $arrayArticles;
     }
 
+    public static function SqlGetLast(int $nb)
+    {
+        $bdd = BDD::getInstance();
+        $req = $bdd->prepare('SELECT * FROM articles order by Id DESC LIMIT :limit');
+        $req->bindValue(':limit', $nb, \PDO::PARAM_INT);
+        $req->execute();
+
+        $articles = $req->fetchAll(\PDO::FETCH_ASSOC);
+        $arrayArticles = [];
+        foreach ($articles as $article) {
+            $articleObj = new Article();
+            $articleObj->setId($article['Id']);
+            $articleObj->setTitre($article['Titre']);
+            $articleObj->setAuteur($article['Auteur']);
+            $articleObj->setDescription($article['Description']);
+            $articleObj->setDatePublication(new \DateTime($article['DatePublication']));
+            $articleObj->setImageRepository($article['ImageRepository']);
+            $articleObj->setImageFileName($article['ImageFileName']);
+            $arrayArticles[] = $articleObj;
+        }
+
+        return $arrayArticles;
+    }
+
+
     public static function SqlAdd(Article $article) : int{
         try{
             $req = BDD::getInstance()->prepare("INSERT INTO articles (Titre,Description,DatePublication,Auteur,ImageRepository,ImageFileName)  VALUES (:Titre, :Description, :DatePublication, :Auteur, :ImageRepository, :ImageFileName)");
@@ -171,5 +196,27 @@ class Article{
         $req->bindValue(':Id', $Id);
         $req->execute();
     }
+
+    public static function SqlSearch(string $keyword) : array
+    {
+        $requete = BDD::getInstance()->prepare('SELECT * FROM articles WHERE Titre LIKE :keyword OR Description LIKE :keyword ORDER BY Id DESC');
+        $requete->bindValue(':keyword','%'.$keyword.'%');
+        $requete->execute();
+        $articlesSql = $requete->fetchAll(\PDO::FETCH_ASSOC);
+        $articlesObjet = [];
+        foreach ($articlesSql as $articleSql){
+            $article = new Article();
+            $article->setId($articleSql["Id"]);
+            $article->setTitre($articleSql["Titre"]);
+            $article->setDescription($articleSql["Description"]);
+            $article->setDatePublication(new \DateTime($articleSql["DatePublication"]));
+            $article->setAuteur($articleSql["Auteur"]);
+            $article->setImageRepository($articleSql["ImageRepository"]);
+            $article->setImageFileName($articleSql["ImageFileName"]);
+            $articlesObjet[] = $article;
+        }
+        return $articlesObjet;
+    }
+
 
 }
