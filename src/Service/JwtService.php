@@ -26,7 +26,7 @@ class JwtService{
     {
         if (! preg_match('/Bearer\s(\S+)/', $_SERVER['HTTP_AUTHORIZATION'], $matches)) {
             $result = [
-                "code" => 1,
+                "success" => false,
                 "body" => "Token non trouvé dans la requête"
             ];
             return $result;
@@ -35,7 +35,7 @@ class JwtService{
         $jwt = $matches[1];
         if (! $jwt) {
             $result = [
-                "code" => 1,
+                "success" => false,
                 "body" => "Aucun jeton n'a pu être extrait de l'en-tête d'autorisation."
             ];
             return $result;
@@ -46,7 +46,7 @@ class JwtService{
             $token = JWT::decode($jwt, new Key(self::$secretKey, 'HS512'));
         }catch (\Exception$e){
             $result = [
-                "code" => 1,
+                "success" => false,
                 "body" => "Les données du jeton ne sont pas compatibles : {$e->getMessage()}"
             ];
             return $result;
@@ -60,7 +60,7 @@ class JwtService{
             $token->exp < $now->getTimestamp())
         {
             $result = [
-                "code" => 1,
+                "success" => false,
                 "body" => "Les données du jeton ne sont pas compatibles"
             ];
             return $result;
