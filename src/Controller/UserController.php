@@ -1,6 +1,8 @@
 <?php
 namespace src\Controller;
 
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use src\Model\User;
 use src\Service\JwtService;
 
@@ -129,5 +131,7 @@ class UserController extends AbstractController
         ]);
 
     }
+
+
 
 }
