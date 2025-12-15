@@ -41,11 +41,29 @@ class ApiArticleController{
                 'message' => 'Il manque des données obligatoires'
             ]);
         }
+
+        // Traitement image
+        $sqlRepository = null;
+        $nomImage = null;
+        if(isset($data->Image)){
+            $nomImage = uniqid().'.jpg';
+            $dateNow = new \DateTime();
+            $sqlRepository = $dateNow->format('Y/m');
+            $repository = "{$_SERVER['DOCUMENT_ROOT']}/uploads/images/{$sqlRepository}/{$nomImage}";
+            if(!is_dir($repository)){
+                mkdir($repository,0777, true);
+            }
+            $file = fopen("{$repository}/{$nomImage}", "wb");
+            fwrite($file, base64_decode($data->Image));
+            fclose($file);
+        }
         // Création de l'article + insert en BDD
         $article = new Article();
         $article->setTitre($data->Titre)
             ->setAuteur($data->Auteur)
             ->setDescription($data->Description)
+            ->setImageRepository($sqlRepository)
+            ->setImageFileName($nomImage)
             ->setDatePublication(new \DateTime($data->DatePublication));
         $id = Article::SqlAdd($article);
         return json_encode([
