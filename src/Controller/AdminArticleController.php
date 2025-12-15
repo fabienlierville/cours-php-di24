@@ -3,6 +3,9 @@ namespace src\Controller;
 
 use src\Model\Article;
 use src\Model\BDD;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mime\Email;
 
 class AdminArticleController extends AbstractController{
 
@@ -59,6 +62,19 @@ class AdminArticleController extends AbstractController{
 
             //Exécuter la requete SQL d'ajout (model)
             $id = Article::SqlAdd($article);
+
+            $article->setId($id);
+            $trspt = Transport::fromDsn("smtp://3dd84281bc8679:8a9180301c670a@sandbox.smtp.mailtrap.io:2525");
+            $mailer = new Mailer($trspt);
+            //Création Email
+            $email = (new Email())
+                ->from("admin@cesi.local")
+                ->to("admin@cesi.local")
+                ->subject("Nouvel Article posté")
+                ->html($this->twig->render('mail/article.add.html.twig',["article" => $article]));
+            $mailer->send($email);
+
+
 
             //Rédiriger l'internaute sur la page liste
             header("location:/AdminArticle/show/{$id}");

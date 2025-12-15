@@ -20,7 +20,10 @@ class ContactController extends AbstractController {
             ->from($_POST["mail"])
             ->to("admin@cesi.local")
             ->subject("Contact depuis le formulaire")
-            ->html("<h1>Message de {$_POST["nom"]}</h1><p>{$_POST["message"]}</p>");
+            ->html($this->twig->render('mail/contact.html.twig', [
+                'nom' => $_POST["nom"],
+                'message' => $_POST["message"],
+            ]));
         $mailer->send($email);
         header("location:/");
 
