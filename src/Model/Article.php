@@ -119,7 +119,6 @@ class Article implements JsonSerializable {
         $articles = $req->fetchAll(\PDO::FETCH_ASSOC);
         $arrayArticles = [];
         foreach ($articles as $article) {
-            //var_dump(json_encode($article));
             $articleObj = new Article();
             $articleObj->setId($article['Id']);
             $articleObj->setTitre($article['Titre']);
@@ -129,7 +128,6 @@ class Article implements JsonSerializable {
             $articleObj->setImageRepository($article['ImageRepository']);
             $articleObj->setImageFileName($article['ImageFileName']);
             $arrayArticles[] = $articleObj;
-            var_dump(json_encode($articleObj));
         }
 
         return $arrayArticles;
