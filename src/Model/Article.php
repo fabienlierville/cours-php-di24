@@ -1,7 +1,7 @@
 <?php
 namespace src\Model;
-
-class Article{
+use JsonSerializable;
+class Article implements JsonSerializable {
     private ?int $Id = null;
     private ?string $Titre = null;
     private ?string $Auteur = null;
@@ -119,6 +119,7 @@ class Article{
         $articles = $req->fetchAll(\PDO::FETCH_ASSOC);
         $arrayArticles = [];
         foreach ($articles as $article) {
+            //var_dump(json_encode($article));
             $articleObj = new Article();
             $articleObj->setId($article['Id']);
             $articleObj->setTitre($article['Titre']);
@@ -128,6 +129,7 @@ class Article{
             $articleObj->setImageRepository($article['ImageRepository']);
             $articleObj->setImageFileName($article['ImageFileName']);
             $arrayArticles[] = $articleObj;
+            var_dump(json_encode($articleObj));
         }
 
         return $arrayArticles;
@@ -219,4 +221,16 @@ class Article{
     }
 
 
+    public function jsonSerialize() :mixed
+    {
+        return [
+            'Id' => $this->getId(),
+            'Titre' => $this->getTitre(),
+            'Description' => $this->getDescription(),
+            'DatePublication' => $this->getDatePublication()->format('Y-m-d'),
+            'Auteur' => $this->getAuteur(),
+            'ImageRepository' => $this->getImageRepository(),
+            'ImageFileName' => $this->getImageFileName()
+        ];
+    }
 }
