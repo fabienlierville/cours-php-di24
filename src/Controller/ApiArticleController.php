@@ -49,7 +49,7 @@ class ApiArticleController{
             $nomImage = uniqid().'.jpg';
             $dateNow = new \DateTime();
             $sqlRepository = $dateNow->format('Y/m');
-            $repository = "{$_SERVER['DOCUMENT_ROOT']}/uploads/images/{$sqlRepository}/{$nomImage}";
+            $repository = "{$_SERVER['DOCUMENT_ROOT']}/uploads/images/{$sqlRepository}";
             if(!is_dir($repository)){
                 mkdir($repository,0777, true);
             }
