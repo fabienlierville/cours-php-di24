@@ -11,11 +11,14 @@ class AdminArticleController extends AbstractController{
 
     public function list(){
         $articles = Article::SqlGetAll();
+        $token = bin2hex(random_bytes(16));
+        $_SESSION['token'] = $token;
         return $this->twig->render(
             'admin/article/list.html.twig',
             [
                 'articles' => $articles,
-                "prenom" => "Vivien"
+                "prenom" => "Vivien",
+                "token" => $token
             ]
         );
     }
@@ -176,6 +179,12 @@ class AdminArticleController extends AbstractController{
 
     public function delete($id)
     {
+        $token = $_GET["token"];
+        UserController::haveGoodRole(["Administrateur"]);
+        if($token != $_SESSION["token"]){
+            header("location: /AdminArticle/list");
+            return;
+        }
         $article = Article::SqlGetById($id);
         $sqlRepository = ($article->getImageRepository() != "") ? $article->getImageRepository() : null;
         $nomImage = ($article->getImageFileName() != "") ? $article->getImageFileName() : null;
