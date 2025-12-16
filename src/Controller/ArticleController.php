@@ -1,5 +1,6 @@
 <?php
 namespace src\Controller;
+use Mpdf\Output\Destination;
 use src\Model\Article;
 
 class ArticleController extends AbstractController
@@ -36,5 +37,16 @@ class ArticleController extends AbstractController
         header("location: /");
     }
 
+    public function pdf($id){
+        $article = Article::SqlGetById($id);
+        $mpdf = new \Mpdf\Mpdf([
+            'tempDir' => $_SERVER['DOCUMENT_ROOT'].'/../var/cache/pdf',
+        ]);
+        $mpdf->WriteHTML($this->twig->render("article/pdf.html.twig",[
+            "article" => $article
+        ]));
+        $mpdf->Output(name: 'Article.pdf', dest: Destination::DOWNLOAD );
+
+    }
 
 }
